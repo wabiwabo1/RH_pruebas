@@ -3,6 +3,8 @@ import pymysql
 
 app = Flask(__name__)
 
+# Rutas del Catalogo:
+
 @app.route('/')
 def home():
     return render_template("home.html")
@@ -14,6 +16,18 @@ def area():
     cursor.execute('select idArea, descripcion from area order by idArea')
     datos = cursor.fetchall()
     return render_template("area.html", comentarios = datos)
+
+@app.route('/carrera')
+def carrera():
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3' )
+    cursor = conn.cursor()
+    cursor.execute('select idCarrera, descripcion from carrera order by idCarera')
+    datos = cursor.fetchall()
+    return render_template("carrera.html", comentarios = datos)
+
+# Fin rutas de Catalogo________________________________________________________________________
+
+# Acciones de los Catalogos:
 
 @app.route('/area_editar/<string:id>')
 def area_editar(id):

@@ -21,9 +21,25 @@ def area():
 def carrera():
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3' )
     cursor = conn.cursor()
-    cursor.execute('select idCarrera, descripcion from carrera order by idCarera')
+    cursor.execute('select idCarrera, descripcion from carrera order by idCarrera')
     datos = cursor.fetchall()
     return render_template("carrera.html", comentarios = datos)
+
+@app.route('/habilidades')
+def habilidades():
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3' )
+    cursor = conn.cursor()
+    cursor.execute('select idHabilidad, descripcion from habilidad order by idHabilidad')
+    datos = cursor.fetchall()
+    return render_template("habilidades.html", comentarios = datos)
+
+@app.route('/idiomas')
+def idiomas():
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3' )
+    cursor = conn.cursor()
+    cursor.execute('select idIdioma, descripcion from idioma order by idIdioma')
+    datos = cursor.fetchall()
+    return render_template("idiomas.html", comentarios = datos)
 
 # Fin rutas de Catalogo________________________________________________________________________
 

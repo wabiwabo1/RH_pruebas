@@ -25,6 +25,30 @@ def carrera():
     datos = cursor.fetchall()
     return render_template("carrera.html", comentarios = datos)
 
+@app.route('/escolaridad')
+def escolaridad():
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3' )
+    cursor = conn.cursor()
+    cursor.execute('select idEscolaridad, descripcion from escolaridad order by idEscolaridad')
+    datos = cursor.fetchall()
+    return render_template("escolaridad.html", comentarios = datos)
+
+@app.route('/estadocivil')
+def estado_civil():
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3' )
+    cursor = conn.cursor()
+    cursor.execute('select idEstadoCivil, descripcion from estado_civil order by idEstadoCivil')
+    datos = cursor.fetchall()
+    return render_template("estadocivil.html", comentarios = datos)
+
+@app.route('/gradodeavance')
+def grado_avance():
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3' )
+    cursor = conn.cursor()
+    cursor.execute('select idGradoAvance, descripcion from grado_avance order by idGradoAvance')
+    datos = cursor.fetchall()
+    return render_template("gradodeavance.html", comentarios = datos)
+
 @app.route('/habilidades')
 def habilidades():
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3' )

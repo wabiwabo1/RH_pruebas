@@ -1,0 +1,30 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    background-image:url(/static/imagenes/recursos.png);
+    background-attachment: unset;
+    background-position: center center;
+}
+
+html, body {
+    height: 100%;
+}
+.wrapper {
+    min-height: calc(100% - 4rem);
+    
+}
+.footer {
+    height: 8rem;
+    background-color: #374041;
+    padding: 15px 10px;
+    margin-left: 224px;
+}
+.seccion-final{
+    display: flex;
+    justify-content: space-around;
+}
+footer,p{
+    color:aliceblue;
+}

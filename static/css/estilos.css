@@ -18,8 +18,7 @@ html, body {
 .footer {
     height: 8rem;
     background-color: #374041;
-    padding: 15px 10px;
-    margin-left: 224px;
+    padding: 20px 10px;
 }
 .seccion-final{
     display: flex;

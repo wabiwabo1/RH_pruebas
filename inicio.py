@@ -427,9 +427,7 @@ def empl():
 
     cursor.execute('select idEmpleado, nombre from empleado order by idEmpleado')
     datos = cursor.fetchall()
-
-    return render_template("empleados.html", pue = datos, dat='   ', catEmpleado = '  ', catEdoCivil = '   ', catEscolaridad = '   ',
-                           catGradoAvance = '   ', catCarrera = '   ', catRequisicion = ' ', catPuesto = ' ')
+    return render_template("empleados.html", pue = datos, dat='   ', catEmpleado = '  ', catEdoCivil = '   ', catEscolaridad = '   ',catGradoAvance = '   ', catCarrera = '   ', catRequisicion = ' ', catPuesto = ' ')
 
 
 @app.route('/empleado_fdetalle/<string:idP>', methods=['GET'])
@@ -452,27 +450,25 @@ def candidatos_fdetalle(idP):
     #datos2 = cursor.fetchall()
 
     cursor.execute('select a.idRequisicion, a.descripcion from estado_civil a, empleado b where a.idRequisicion = b.idRequisicion and b.idEmpleado = %s', (idP))
-    datos3 = cursor.fetchall()
+    datos2 = cursor.fetchall()
     
     cursor.execute('select a.idPuesto, a.descripcion from estado_civil a, empleado b where a.idPuesto = b.idPuesto and b.idEmpleado = %s', (idP))
-    datos4 = cursor.fetchall()
+    datos3 = cursor.fetchall()
 
     cursor.execute('select a.idEstadoCivil, a.descripcion from estado_civil a, empleado b where a.idEstadoCivil = b.idEstadoCivil and b.idEmpleado = %s', (idP))
-    datos5 = cursor.fetchall()
+    datos4 = cursor.fetchall()
 
     cursor.execute('select a.idEscolaridad, a.descripcion from escolaridad a, empleado b where a.idEscolaridad = b.idEscolaridad and b.idEmpleado = %s', (idP))
-    datos6 = cursor.fetchall()
+    datos5 = cursor.fetchall()
 
     cursor.execute('select a.idGradoAvance, a.descripcion from grado_avance a, empleado b where a.idGradoAvance = b.idGradoAvance and b.idEmpleado = %s', (idP))
-    datos7 = cursor.fetchall()
+    datos6 = cursor.fetchall()
 
     cursor.execute('select a.idCarrera, a.descripcion from carrera a, empleado b where a.idCarrera = b.idCarrera and b.idEmpleado = %s', (idP))
-    datos8 = cursor.fetchall()
+    datos7 = cursor.fetchall()
 
-
-    datos8 = cursor.fetchall()
-    return render_template("empleados.html", pue = datos, dat=dato[0], catEmpleado=datos1[0], catRequisicion=datos3[0],
-                           catPuesto=datos4[0], catEdoCivil=datos5[0], catEscolaridad=datos6, catGradoAvance=datos7, catCarrera=datos8)
+    return render_template("empleados.html", pue = datos, dat=dato[0], catEmpleado=datos1[0], catRequisicion=datos2[0],
+                           catPuesto=datos3[0], catEdoCivil=datos4[0], catEscolaridad=datos5, catGradoAvance=datos6, catCarrera=datos7)
 
 
 @app.route('/empleados_borrar/<string:idP>')
@@ -500,25 +496,25 @@ def empleados_agrOp2():
     #datos2 = cursor.fetchall()
 
     cursor.execute('select idRequisicion, descripcion from requisicion ')
-    datos3 = cursor.fetchall()
+    datos2 = cursor.fetchall()
 
     cursor.execute('select idPuesto, descripcion from puesto ')
-    datos4 = cursor.fetchall()
+    datos3 = cursor.fetchall()
 
     cursor.execute('select idEstadoCivil, descripcion from estado_civil ')
-    datos5 = cursor.fetchall()
+    datos4 = cursor.fetchall()
 
     cursor.execute('select idEscolaridad, descripcion from escolaridad ')
-    datos6 = cursor.fetchall()
+    datos5 = cursor.fetchall()
 
     cursor.execute('select idGradoAvance, descripcion from grado_avance ')
-    datos7 = cursor.fetchall()
+    datos6 = cursor.fetchall()
 
     cursor.execute('select idCarrera, descripcion from carrera ')
-    datos8 = cursor.fetchall()
+    datos7 = cursor.fetchall()
 
-    return render_template("puesto_agrOp2.html", catCandidato=datos1[0], catRequisicion=datos3[0],
-                           catPuesto=datos4[0], catEdoCivil=datos5[0], catEscolaridad=datos6, catGradoAvance=datos7, catCarrera=datos8)
+    return render_template("puesto_agrOp2.html", catEmpleado=datos1[0], catRequisicion=datos2[0],
+                           catPuesto=datos3[0], catEdoCivil=datos4[0], catEscolaridad=datos5, catGradoAvance=datos6, catCarrera=datos7)
 
 @app.route('/empleados_fagrega2', methods=['POST'])
 def empleados_fagrega():
@@ -569,23 +565,23 @@ def empleados_fagrega():
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
     cursor = conn.cursor()
     cursor.execute(
-    'insert into candidato (idEmpleado, idRequisicion, idPuesto, CURP, RFC, nombre, domCalle, domNumExtInt, domColonia,'
+    'insert into empleado (idEmpleado, idRequisicion, idPuesto, CURP, RFC, nombre, domCalle, domNumExtInt, domColonia,'
     ' tel1, sueldo, correoE, edad, sexo, idEstadoCivil, idEscolaridad, idGradoAvance, idCarrera) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)',
-    ( idAr, idEs, idGA, idCa, idCe, idCi, idCo, CURP, RFC, nombre, domCalle, domCalle, domColonia, tel1, sueldo, correoE, edad, sexo))
+    ( idAr, idEs, idGA, idCa, idCe, idCi, idCo, CURP, RFC, nombre, apellido, domCalle, domCalle, domColonia, tel1, sueldo, correoE, edad, sexo))
     conn.commit()
 
-    cursor.execute('select idCandidato from candidato where idCandidato=(select max(idCandidato) from candidato) ')
+    cursor.execute('select idEmpleado from empleado where idEmpleado=(select max(idEmpleado) from empleado) ')
     dato = cursor.fetchall()
     idpue = dato[0]
     idP = idpue[0]
 
-    return redirect(url_for('candidato'))
+    return redirect(url_for('empleado'))
 
 @app.route('/empleados_fedita/<string:idP>', methods=['POST'])
 def empleados_fedita(idP):
     if request.method == 'POST':
         
-        idAr = request.form['idCandidato']
+        idAr = request.form['idEmpleado']
         idEs = request.form['idRequisicion']
         idGA = request.form['idPuesto']
         idCa = request.form['idEstadoCivil']
@@ -609,7 +605,7 @@ def empleados_fedita(idP):
     cursor = conn.cursor()
 
     cursor.execute('update candidato set idRequisicion = %s, idPuesto = %s, CURP = %s, RFC = %s, nombre = %s, apellido = %s, domCalle = %s, domNumExtInt = %s, domColonia = %s,'
-    ' tel1 = %s, sueldo = %s, correoE = %s, edad = %s, sexo = %s, idEstadoCivil = %s, idEscolaridad = %s, idGradoAvance = %s, idCarrera = %s where idCandidato = %s', ( idAr, idEs, idGA, idCa, idCe, idCi, idCo, CURP, RFC, nombre, apellido, domCalle, domCalle, domColonia, tel1, sueldo, correoE, edad, sexo))
+    ' tel1 = %s, sueldo = %s, correoE = %s, edad = %s, sexo = %s, idEstadoCivil = %s, idEscolaridad = %s, idGradoAvance = %s, idCarrera = %s where idEmpleado = %s', ( idAr, idEs, idGA, idCa, idCe, idCi, idCo, CURP, RFC, nombre, apellido, domCalle, domCalle, domColonia, tel1, sueldo, correoE, edad, sexo))
     conn.commit()
 
 

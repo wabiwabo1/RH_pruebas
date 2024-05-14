@@ -509,3 +509,37 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+-- Empleados
+
+CREATE TABLE `empleado` (
+  `idEmpleado` int(11) NOT NULL AUTO_INCREMENT,
+  `idRequisicion` int(11) NOT NULL,
+  `idPuesto` int(11) NOT NULL,
+  `CURP` varchar(30) NOT NULL,
+  `RFC` varchar(20) NOT NULL,
+  `nombre` varchar(40) NOT NULL,
+  `apellido` varchar(40) NOT NULL,
+  `domCalle` varchar(40) NOT NULL,
+  `domNumExtInt` varchar(30) NOT NULL,
+  `domColonia` varchar(40) NOT NULL,
+  `tel1` varchar(20) NOT NULL,
+  `sueldo` varchar(20) NOT NULL,
+  `correoE` varchar(40) NOT NULL,
+  `edad` int(11) NOT NULL,
+  `sexo` varchar(10) NOT NULL,
+  `idEstadoCivil` int(11) NOT NULL,
+  `idEscolaridad` int(11) NOT NULL,
+  `idGradoAvance` int(11) NOT NULL,
+  `idCarrera` int(11) NOT NULL,
+  PRIMARY KEY (`idEmpleado`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Volcado de datos para la tabla `candidato`
+--
+
+INSERT INTO `empleado` (`idEmpleado`, `idRequisicion`, `idPuesto`, `CURP`, `RFC`, `nombre`, `apellido`, `domCalle`, `domNumExtInt`, `domColonia`, `tel1`, `sueldo`, `correoE`, `edad`, `sexo`, `idEstadoCivil`, `idEscolaridad`, `idGradoAvance`, `idCarrera`) VALUES
+(1, 1, 1, 'ROGH760106MASDML03', 'dfadf', 'Carlitos', 'Carlitos', 'adsfa', '23', 'erqwr', '32', '23', 'rqwr', 23, 'Indistinto', 1, 2, 1, 1),
+(2, 1, 1, 'ROML551119HASDCR08', 'dfadf', 'Pepe', 'Carlitos', 'adsfa', '23', 'erqwr', '32', '23', 'rqwr', 23, 'Indistinto', 3, 2, 3, 1);
+

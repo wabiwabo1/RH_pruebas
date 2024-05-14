@@ -9,17 +9,6 @@ app = Flask(__name__)
 def home():
     return render_template("home.html")
 
-@app.route('/empleados')
-def empl():
-    conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3' )
-    cursor = conn.cursor()
-
-    cursor.execute('select idPuesto, nomPuesto from puesto order by idPuesto')
-    datos = cursor.fetchall()
-
-    return render_template("empleados.html", pue = datos, dat='   ', catArea = '   ', catEdoCivil = '   ', catEscolaridad = '   ',
-                           catGradoAvance = '    ', catCarrera = '    ', catIdioma = ' ', catHabilidad = ' ')
-
 @app.route('/area')
 def area():
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3' )
@@ -121,7 +110,7 @@ def area_fagrega():
     return redirect(url_for('area'))
 
 
-
+#______________________________________________________________________________________________________________________
 @app.route('/puesto')
 def puesto():
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3' )
@@ -183,7 +172,7 @@ def puesto_borrar(idP):
     cursor.execute('delete from puesto_has_idioma where idPuesto =%s ', (idP))
     conn.commit()
     return redirect(url_for('puesto'))
-
+#-
 
 @app.route('/puesto_agrOp2')
 def puesto_agrOp2():
@@ -212,8 +201,8 @@ def puesto_agrOp2():
 
     return render_template("puesto_agrOp2.html", catArea=datos1, catEdoCivil=datos2, catEscolaridad=datos3,
                            catGradoAvance=datos4, catCarrera=datos5, catIdioma=datos6, catHabilidad=datos7)
-
-
+#-
+#agregar
 @app.route('/puesto_fagrega2', methods=['POST'])
 def puesto_fagrega():
     if request.method == 'POST':
@@ -300,7 +289,7 @@ def puesto_fagrega():
     return redirect(url_for('puesto'))
 
 
-
+#editar
 @app.route('/puesto_editar/<string:idP>')
 def puesto_editar(idP):
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
@@ -362,6 +351,7 @@ def puesto_editar(idP):
                            Carrera=datos15[0], Idioma=datos16, Habilidad=datos17)
 
 
+#editar puesto
 @app.route('/puesto_fedita/<string:idP>', methods=['POST'])
 def puesto_fedita(idP):
     if request.method == 'POST':
@@ -426,9 +416,206 @@ def puesto_fedita(idP):
             cursor.execute('insert into puesto_has_habilidad(idPuesto,idHabilidad) values (%s,%s)', (idP, i))
             conn.commit()
     return redirect(url_for('puesto'))
+#______________________________________________________________________________________________________________________
+
+#Empleados:
+
+@app.route('/empleados')
+def empl():
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3' )
+    cursor = conn.cursor()
+
+    cursor.execute('select idCandidato, nombre from candidato order by idCandidato')
+    datos = cursor.fetchall()
+
+    return render_template("empleados.html", pue = datos, dat='   ', catArea = '   ', catEdoCivil = '   ', catEscolaridad = '   ',
+                           catGradoAvance = '    ', catCarrera = '    ', catIdioma = ' ', catHabilidad = ' ')
 
 
+@app.route('/candidatos_fdetalle/<string:idP>', methods=['GET'])
+def candidatos_fdetalle(idP):
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
+    cursor = conn.cursor()
+
+    cursor.execute('select idCandidato, nombre from candidato order by idCandidato')
+    datos = cursor.fetchall()
+
+    cursor.execute('select idCandidato,idVacante, idRequisicion, idPuesto, CURP, RFC, nombre, domCalle, domNumExtInt, domColonia,'
+                   ' tel1, tel2, correoE, edad, sexo, idEstadoCivil, idEscolaridad, idGradoAvance, idCarrera from candidato where '
+                   ' idCandidato = %s', (idP))
+    dato = cursor.fetchall()
+
+    cursor.execute('select a.idCandidato, a.descripcion from area a, candidato b where a.idCandidato = b.idCandidato and b.idCandidato = %s', (idP))
+    datos1 = cursor.fetchall()
+
+    cursor.execute('select a.idVacante, a.descripcion from estado_civil a, candidato b where a.idVacante = b.idVacante and b.idCandidato = %s', (idP))
+    datos2 = cursor.fetchall()
+
+    cursor.execute('select a.idRequisicion, a.descripcion from estado_civil a, candidato b where a.idRequisicion = b.idRequisicion and b.idCandidato = %s', (idP))
+    datos3 = cursor.fetchall()
+    
+    cursor.execute('select a.idPuesto, a.descripcion from estado_civil a, candidato b where a.idPuesto = b.idPuesto and b.idCandidato = %s', (idP))
+    datos4 = cursor.fetchall()
+
+    cursor.execute('select a.idEstadoCivil, a.descripcion from estado_civil a, candidato b where a.idEstadoCivil = b.idEstadoCivil and b.idCandidato = %s', (idP))
+    datos5 = cursor.fetchall()
+
+    cursor.execute('select a.idEscolaridad, a.descripcion from escolaridad a, candidato b where a.idEscolaridad = b.idEscolaridad and b.idCandidato = %s', (idP))
+    datos6 = cursor.fetchall()
+
+    cursor.execute('select a.idGradoAvance, a.descripcion from grado_avance a, candidato b where a.idGradoAvance = b.idGradoAvance and b.idCandidato = %s', (idP))
+    datos7 = cursor.fetchall()
+
+    cursor.execute('select a.idCarrera, a.descripcion from carrera a, candidato b where a.idCarrera = b.idCarrera and b.idCandidato = %s', (idP))
+    datos8 = cursor.fetchall()
 
 
+    datos8 = cursor.fetchall()
+    return render_template("empleados.html", pue = datos, dat=dato[0], catCandidato=datos1[0], catVacante=datos2[0], catRequisicion=datos3[0],
+                           catPuesto=datos4[0], catEdoCivil=datos5[0], catEscolaridad=datos6, catGradoAvance=datos7, catCarrera=datos8)
+
+
+@app.route('/empleados_borrar/<string:idP>')
+def empleados_borrar(idP):
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
+    cursor = conn.cursor()
+    cursor.execute('delete from candidatos where idCandidato = %s',(idP))
+    conn.commit()
+    
+#    cursor.execute('delete from puesto_has_habilidad where idCandidato =%s ', (idP))
+#    conn.commit()
+#    cursor.execute('delete from puesto_has_idioma where idCandidato =%s ', (idP))
+#    conn.commit()
+    return redirect(url_for('candidato'))
+
+@app.route('/empleados_agrOp2')
+def empleados_agrOp2():
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
+    cursor = conn.cursor()
+    
+    cursor.execute('select idCandidato, descripcion from candidato ')
+    datos1 = cursor.fetchall()
+
+    cursor.execute('select idVacante, descripcion from vacante ')
+    datos2 = cursor.fetchall()
+
+    cursor.execute('select idRequisicion, descripcion from requisicion ')
+    datos3 = cursor.fetchall()
+
+    cursor.execute('select idPuesto, descripcion from puesto ')
+    datos4 = cursor.fetchall()
+
+    cursor.execute('select idEstadoCivil, descripcion from estado_civil ')
+    datos5 = cursor.fetchall()
+
+    cursor.execute('select idEscolaridad, descripcion from escolaridad ')
+    datos6 = cursor.fetchall()
+
+    cursor.execute('select idGradoAvance, descripcion from grado_avance ')
+    datos7 = cursor.fetchall()
+
+    cursor.execute('select idCarrera, descripcion from carrera ')
+    datos8 = cursor.fetchall()
+
+    return render_template("puesto_agrOp2.html", catCandidato=datos1[0], catVacante=datos2[0], catRequisicion=datos3[0],
+                           catPuesto=datos4[0], catEdoCivil=datos5[0], catEscolaridad=datos6, catGradoAvance=datos7, catCarrera=datos8)
+
+@app.route('/empleados_fagrega2', methods=['POST'])
+def empleados_fagrega():
+    if request.method == 'POST':
+
+        if  'idCandidato' in request.form:
+            idAr = request.form['idCandidato']
+        else:
+            idAr = '1'
+        if 'idVacante' in request.form:
+            idEC = request.form['idVacante']
+        else:
+            idEC = '1'
+        if 'idRequisicion' in request.form:
+            idEs = request.form['idRequisicion']
+        else:
+            idEs = '1'
+        if 'idPuesto' in request.form:
+            idGA = request.form['idPuesto']
+        else:
+            idGA = '1'
+        if 'idEstadoCivil' in request.form:
+            idCa = request.form['idEstadoCivil']
+        else:
+            idCa = '1'
+        if 'idEscolaridad' in request.form:
+            idCe = request.form['idEscolaridad']
+        else:
+            idCe = '1'
+        if 'idGradoAvance' in request.form:
+            idCi = request.form['idGradoAvance']
+        else:
+            idCi = '1'
+        if 'idCarrera' in request.form:
+            idCo = request.form['idCarrera']
+        else:
+            idCo = '1'
+        CURP = request.form['CURP']
+        RFC = request.form['RFC']
+        nombre = request.form['nombre']
+        domCalle = request.form['domCalle']
+        domCalle = request.form['domNumExtInt']
+        domColonia = request.form['domColonia']
+        tel1 = request.form['tel1']
+        tel2 = request.form['tel2']
+        correoE = request.form['correoE']
+        edad = request.form['edad']
+        sexo = request.form['sexo']
+
+
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
+    cursor = conn.cursor()
+    cursor.execute(
+    'insert into candidato (idCandidato,idVacante, idRequisicion, idPuesto, CURP, RFC, nombre, domCalle, domNumExtInt, domColonia,'
+    ' tel1, tel2, correoE, edad, sexo, idEstadoCivil, idEscolaridad, idGradoAvance, idCarrera) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)',
+    ( idAr, idEC, idEs, idGA, idCa, idCe, idCi, idCo, CURP, RFC, nombre, domCalle, domCalle, domColonia, tel1, tel2, correoE, edad, sexo))
+    conn.commit()
+
+    cursor.execute('select idCandidato from candidato where idCandidato=(select max(idCandidato) from candidato) ')
+    dato = cursor.fetchall()
+    idpue = dato[0]
+    idP = idpue[0]
+
+    return redirect(url_for('candidato'))
+
+@app.route('/empleados_fedita/<string:idP>', methods=['POST'])
+def empleados_fedita(idP):
+    if request.method == 'POST':
+        
+        idAr = request.form['idCandidato']
+        idEC = request.form['idVacante']
+        idEs = request.form['idRequisicion']
+        idGA = request.form['idPuesto']
+        idCa = request.form['idEstadoCivil']
+        idCe = request.form['idEscolaridad']
+        idCi = request.form['idGradoAvance']
+        idCo = request.form['idCarrera']
+        CURP = request.form['CURP']
+        RFC = request.form['RFC']
+        nombre = request.form['nombre']
+        domCalle = request.form['domCalle']
+        domCalle = request.form['domNumExtInt']
+        domColonia = request.form['domColonia']
+        tel1 = request.form['tel1']
+        tel2 = request.form['tel2']
+        correoE = request.form['correoE']
+        edad = request.form['edad']
+        sexo = request.form['sexo']
+
+    conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
+    cursor = conn.cursor()
+
+    cursor.execute('update candidato set idVacante = %s, idRequisicion = %s, idPuesto = %s, CURP = %s, RFC = %s, nombre = %s, domCalle = %s, domNumExtInt = %s, domColonia = %s,'
+    ' tel1 = %s, tel2 = %s, correoE = %s, edad = %s, sexo = %s, idEstadoCivil = %s, idEscolaridad = %s, idGradoAvance = %s, idCarrera = %s where idCandidato = %s', ( idAr, idEC, idEs, idGA, idCa, idCe, idCi, idCo, CURP, RFC, nombre, domCalle, domCalle, domColonia, tel1, tel2, correoE, edad, sexo))
+    conn.commit()
+
+
+#_____________________________________________________________________
 if __name__ == "__main__":
     app.run(debug=True)

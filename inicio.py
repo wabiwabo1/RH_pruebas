@@ -420,8 +420,8 @@ def puesto_fedita(idP):
 
 #Empleados:
 
-@app.route('/empleados')
-def empl():
+@app.route('/empleados', endpoint='empleados')
+def empleados():
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3' )
     cursor = conn.cursor()
 
@@ -475,14 +475,16 @@ def candidatos_fdetalle(idP):
 def empleados_borrar(idP):
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
     cursor = conn.cursor()
-    cursor.execute('delete from empleado where idEmpleado = %s',(idP))
+    cursor.execute('DELETE FROM empleado WHERE idEmpleado = %s', (idP,))
     conn.commit()
-    
-#    cursor.execute('delete from puesto_has_habilidad where idCandidato =%s ', (idP))
-#    conn.commit()
-#    cursor.execute('delete from puesto_has_idioma where idCandidato =%s ', (idP))
-#    conn.commit()
-    return redirect(url_for('empleados.html'))
+    conn.close()  
+
+    # Cerramos la conexión después de utilizarla
+    # También puedes cerrar el cursor, pero como la conexión se cerrará, no es necesario.
+
+    return redirect(url_for('empleados'))
+
+
 
 @app.route('/empleados_agr0p2')
 def empleados_agr0p2():
@@ -605,7 +607,7 @@ def empleados_fedita(idP):
     ' tel1 = %s, sueldo = %s, correoE = %s, edad = %s, sexo = %s, idEstadoCivil = %s, idEscolaridad = %s, idGradoAvance = %s, idCarrera = %s where idEmpleado = %s', ( idAr, idEs, idGA, idCa, idCe, idCi, idCo, CURP, RFC, nombre, apellido, domCalle, domCalle, domColonia, tel1, sueldo, correoE, edad, sexo))
     conn.commit()
 
-    return redirect(url_for('empleados_edi.html'))
+    return redirect(url_for('empleados'))
 
 #_____________________________________________________________________
 if __name__ == "__main__":

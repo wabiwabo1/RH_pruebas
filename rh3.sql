@@ -540,6 +540,6 @@ CREATE TABLE `empleado` (
 --
 
 INSERT INTO `empleado` (`idEmpleado`, `idRequisicion`, `idPuesto`, `CURP`, `RFC`, `nombre`, `apellido`, `domCalle`, `domNumExtInt`, `domColonia`, `tel1`, `sueldo`, `correoE`, `edad`, `sexo`, `idEstadoCivil`, `idEscolaridad`, `idGradoAvance`, `idCarrera`) VALUES
-(1, 1, 1, 'ROGH760106MASDML03', 'dfadf', 'Carlitos', 'Carlitos', 'adsfa', '23', 'erqwr', '32', '23', 'rqwr', 23, 'Indistinto', 1, 2, 1, 1),
-(2, 1, 1, 'ROML551119HASDCR08', 'dfadf', 'Pepe', 'Carlitos', 'adsfa', '23', 'erqwr', '32', '23', 'rqwr', 23, 'Indistinto', 3, 2, 3, 1);
+(1, 1, 1, 'ROGH760106MASDML03', 'dfadf', 'Carlitos', 'Muntez', 'Villas', '#23', 'palmas', '4491102343', '$233', 'carlitos@gmail.com', 23, 'Macho', 1, 2, 1, 1),
+(2, 1, 1, 'ROML551119HASDCR08', 'dfajy', 'Pepe', 'Maciado', 'Potreros', '#26', 'cruz', '4491739435', '$2223', 'pepe@gmail.com', 23, 'Indistinto', 3, 2, 3, 1);
 

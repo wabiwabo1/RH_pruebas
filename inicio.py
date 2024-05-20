@@ -443,16 +443,16 @@ def candidatos_fdetalle(idP):
                    ' idEmpleado = %s', (idP))
     dato = cursor.fetchall()
 
-    cursor.execute('select a.idEmpleado, a.descripcion from area a, empleado b where a.idEmpleado = b.idEmpleado and b.idEmpleado = %s', (idP))
-    datos1 = cursor.fetchall()
+    #cursor.execute('select a.idEmpleado, a.descripcion from idEmpleado a, empleado b where a.idEmpleado = b.idEmpleado and b.idEmpleado = %s', (idP))
+    #datos1 = cursor.fetchall()
 
     #cursor.execute('select a.idVacante, a.descripcion from estado_civil a, empleado b where a.idVacante = b.idVacante and b.idEmpleado = %s', (idP))
     #datos2 = cursor.fetchall()
 
-    cursor.execute('select a.idRequisicion, a.descripcion from estado_civil a, empleado b where a.idRequisicion = b.idRequisicion and b.idEmpleado = %s', (idP))
+    cursor.execute('select a.idRequisicion, a.folio from requisicion a, empleado b where a.idRequisicion = b.idRequisicion and b.idEmpleado = %s', (idP))
     datos2 = cursor.fetchall()
     
-    cursor.execute('select a.idPuesto, a.descripcion from estado_civil a, empleado b where a.idPuesto = b.idPuesto and b.idEmpleado = %s', (idP))
+    cursor.execute('select a.idPuesto, a.descripcionGeneral from puesto a, empleado b where a.idPuesto = b.idPuesto and b.idEmpleado = %s', (idP))
     datos3 = cursor.fetchall()
 
     cursor.execute('select a.idEstadoCivil, a.descripcion from estado_civil a, empleado b where a.idEstadoCivil = b.idEstadoCivil and b.idEmpleado = %s', (idP))
@@ -467,7 +467,7 @@ def candidatos_fdetalle(idP):
     cursor.execute('select a.idCarrera, a.descripcion from carrera a, empleado b where a.idCarrera = b.idCarrera and b.idEmpleado = %s', (idP))
     datos7 = cursor.fetchall()
 
-    return render_template("empleados.html", pue = datos, dat=dato[0], catEmpleado=datos1[0], catRequisicion=datos2[0],
+    return render_template("empleados.html", pue = datos, dat=dato[0], catRequisicion=datos2[0],
                            catPuesto=datos3[0], catEdoCivil=datos4[0], catEscolaridad=datos5, catGradoAvance=datos6, catCarrera=datos7)
 
 
@@ -490,7 +490,7 @@ def empleados_agr0p2():
     cursor = conn.cursor()
 
     cursor.execute('select idEmpleado, descripcion from empleado ')
-    datos2 = cursor.fetchall()
+    datos1 = cursor.fetchall()
 
     cursor.execute('select idEstadoCivil, descripcion from estado_civil ')
     datos2 = cursor.fetchall()
@@ -604,10 +604,6 @@ def empleados_fedita(idP):
     cursor.execute('update candidato set idRequisicion = %s, idPuesto = %s, CURP = %s, RFC = %s, nombre = %s, apellido = %s, domCalle = %s, domNumExtInt = %s, domColonia = %s,'
     ' tel1 = %s, sueldo = %s, correoE = %s, edad = %s, sexo = %s, idEstadoCivil = %s, idEscolaridad = %s, idGradoAvance = %s, idCarrera = %s where idEmpleado = %s', ( idAr, idEs, idGA, idCa, idCe, idCi, idCo, CURP, RFC, nombre, apellido, domCalle, domCalle, domColonia, tel1, sueldo, correoE, edad, sexo))
     conn.commit()
-    return render_template("empleados_edi.html", dat=dato[0], catNombre=datos1, catEdoCivil=datos2, catEscolaridad=datos3,
-                           catGradoAvance=datos4, catCarrera=datos5, catIdioma=datos6, catHabilidad=datos7,
-                           Area=datos11[0], EdoCivil=datos12[0], Escolaridad=datos13[0], GradoAvance=datos14[0],
-                           Carrera=datos15[0], Idioma=datos18, Habilidad=datos19)
 
 #_____________________________________________________________________
 if __name__ == "__main__":

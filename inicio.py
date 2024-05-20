@@ -430,7 +430,7 @@ def empl():
     return render_template("empleados.html", pue = datos, dat='   ', catEmpleado = '  ', catEdoCivil = '   ', catEscolaridad = '   ',catGradoAvance = '   ', catCarrera = '   ', catRequisicion = ' ', catPuesto = ' ')
 
 
-@app.route('/empleado_fdetalle/<string:idP>', methods=['GET'])
+@app.route('/empleados_fdetalle/<string:idP>', methods=['GET'])
 def candidatos_fdetalle(idP):
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
     cursor = conn.cursor()
@@ -482,39 +482,36 @@ def empleados_borrar(idP):
 #    conn.commit()
 #    cursor.execute('delete from puesto_has_idioma where idCandidato =%s ', (idP))
 #    conn.commit()
-    return redirect(url_for('candidato'))
+    return redirect(url_for('empleados'))
 
-@app.route('/empleados_agrOp2')
-def empleados_agrOp2():
+@app.route('/empleados_agr0p2')
+def empleados_agr0p2():
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
     cursor = conn.cursor()
-    
+
     cursor.execute('select idEmpleado, descripcion from empleado ')
-    datos1 = cursor.fetchall()
-
-    #cursor.execute('select idVacante, descripcion from vacante ')
-    #datos2 = cursor.fetchall()
-
-    cursor.execute('select idRequisicion, descripcion from requisicion ')
     datos2 = cursor.fetchall()
 
-    cursor.execute('select idPuesto, descripcion from puesto ')
-    datos3 = cursor.fetchall()
-
     cursor.execute('select idEstadoCivil, descripcion from estado_civil ')
-    datos4 = cursor.fetchall()
+    datos2 = cursor.fetchall()
 
     cursor.execute('select idEscolaridad, descripcion from escolaridad ')
-    datos5 = cursor.fetchall()
+    datos3 = cursor.fetchall()
 
     cursor.execute('select idGradoAvance, descripcion from grado_avance ')
-    datos6 = cursor.fetchall()
+    datos4 = cursor.fetchall()
 
     cursor.execute('select idCarrera, descripcion from carrera ')
+    datos5 = cursor.fetchall()
+
+    cursor.execute('select idIdioma, descripcion from idioma ')
+    datos6 = cursor.fetchall()
+
+    cursor.execute('select idHabilidad, descripcion from habilidad ')
     datos7 = cursor.fetchall()
 
-    return render_template("puesto_agrOp2.html", catEmpleado=datos1[0], catRequisicion=datos2[0],
-                           catPuesto=datos3[0], catEdoCivil=datos4[0], catEscolaridad=datos5, catGradoAvance=datos6, catCarrera=datos7)
+    return render_template("empleados_agr0p2.html", catEmpleado=datos1, catEdoCivil=datos2, catEscolaridad=datos3,
+                           catGradoAvance=datos4, catCarrera=datos5, catIdioma=datos6, catHabilidad=datos7)
 
 @app.route('/empleados_fagrega2', methods=['POST'])
 def empleados_fagrega():
@@ -553,7 +550,7 @@ def empleados_fagrega():
         nombre = request.form['nombre']
         apellido = request.form['apellido']
         domCalle = request.form['domCalle']
-        domCalle = request.form['domNumExtInt']
+        domNumExtInt = request.form['domNumExtInt']
         domColonia = request.form['domColonia']
         tel1 = request.form['tel1']
         sueldo = request.form['sueldo']
@@ -593,7 +590,7 @@ def empleados_fedita(idP):
         nombre = request.form['nombre']
         apellido = request.form['apellido']
         domCalle = request.form['domCalle']
-        domCalle = request.form['domNumExtInt']
+        domNumExtInt = request.form['domNumExtInt']
         domColonia = request.form['domColonia']
         tel1 = request.form['tel1']
         sueldo = request.form['sueldo']
@@ -607,7 +604,10 @@ def empleados_fedita(idP):
     cursor.execute('update candidato set idRequisicion = %s, idPuesto = %s, CURP = %s, RFC = %s, nombre = %s, apellido = %s, domCalle = %s, domNumExtInt = %s, domColonia = %s,'
     ' tel1 = %s, sueldo = %s, correoE = %s, edad = %s, sexo = %s, idEstadoCivil = %s, idEscolaridad = %s, idGradoAvance = %s, idCarrera = %s where idEmpleado = %s', ( idAr, idEs, idGA, idCa, idCe, idCi, idCo, CURP, RFC, nombre, apellido, domCalle, domCalle, domColonia, tel1, sueldo, correoE, edad, sexo))
     conn.commit()
-
+    return render_template("empleados_edi.html", dat=dato[0], catNombre=datos1, catEdoCivil=datos2, catEscolaridad=datos3,
+                           catGradoAvance=datos4, catCarrera=datos5, catIdioma=datos6, catHabilidad=datos7,
+                           Area=datos11[0], EdoCivil=datos12[0], Escolaridad=datos13[0], GradoAvance=datos14[0],
+                           Carrera=datos15[0], Idioma=datos18, Habilidad=datos19)
 
 #_____________________________________________________________________
 if __name__ == "__main__":

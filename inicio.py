@@ -482,7 +482,7 @@ def empleados_borrar(idP):
 #    conn.commit()
 #    cursor.execute('delete from puesto_has_idioma where idCandidato =%s ', (idP))
 #    conn.commit()
-    return redirect(url_for('empleados'))
+    return redirect(url_for('empleados.html'))
 
 @app.route('/empleados_agr0p2')
 def empleados_agr0p2():
@@ -572,7 +572,7 @@ def empleados_fagrega():
     idpue = dato[0]
     idP = idpue[0]
 
-    return redirect(url_for('empleado'))
+    return redirect(url_for('empleados'))
 
 @app.route('/empleados_fedita/<string:idP>', methods=['POST'])
 def empleados_fedita(idP):
@@ -604,6 +604,8 @@ def empleados_fedita(idP):
     cursor.execute('update candidato set idRequisicion = %s, idPuesto = %s, CURP = %s, RFC = %s, nombre = %s, apellido = %s, domCalle = %s, domNumExtInt = %s, domColonia = %s,'
     ' tel1 = %s, sueldo = %s, correoE = %s, edad = %s, sexo = %s, idEstadoCivil = %s, idEscolaridad = %s, idGradoAvance = %s, idCarrera = %s where idEmpleado = %s', ( idAr, idEs, idGA, idCa, idCe, idCi, idCo, CURP, RFC, nombre, apellido, domCalle, domCalle, domColonia, tel1, sueldo, correoE, edad, sexo))
     conn.commit()
+
+    return redirect(url_for('empleados_edi.html'))
 
 #_____________________________________________________________________
 if __name__ == "__main__":

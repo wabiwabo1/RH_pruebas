@@ -431,23 +431,17 @@ def empleados():
 
 
 @app.route('/empleados_fdetalle/<string:idP>', methods=['GET'])
-def candidatos_fdetalle(idP):
+def empleados_fdetalle(idP):
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
     cursor = conn.cursor()
 
     cursor.execute('select idEmpleado, nombre from empleado order by idEmpleado')
     datos = cursor.fetchall()
 
-    cursor.execute('select idEmpleado, idRequisicion, idPuesto, CURP, RFC, nombre, apellido, domCalle, domNumExtInt, domColonia,'
+    cursor.execute('select idRequisicion, idPuesto, CURP, RFC, nombre, apellido, domCalle, domNumExtInt, domColonia,'
                    ' tel1, sueldo, correoE, edad, sexo, idEstadoCivil, idEscolaridad, idGradoAvance, idCarrera from empleado where '
                    ' idEmpleado = %s', (idP))
     dato = cursor.fetchall()
-
-    #cursor.execute('select a.idEmpleado, a.descripcion from idEmpleado a, empleado b where a.idEmpleado = b.idEmpleado and b.idEmpleado = %s', (idP))
-    #datos1 = cursor.fetchall()
-
-    #cursor.execute('select a.idVacante, a.descripcion from estado_civil a, empleado b where a.idVacante = b.idVacante and b.idEmpleado = %s', (idP))
-    #datos2 = cursor.fetchall()
 
     cursor.execute('select a.idRequisicion, a.folio from requisicion a, empleado b where a.idRequisicion = b.idRequisicion and b.idEmpleado = %s', (idP))
     datos2 = cursor.fetchall()
@@ -467,8 +461,7 @@ def candidatos_fdetalle(idP):
     cursor.execute('select a.idCarrera, a.descripcion from carrera a, empleado b where a.idCarrera = b.idCarrera and b.idEmpleado = %s', (idP))
     datos7 = cursor.fetchall()
 
-    return render_template("empleados.html", pue = datos, dat=dato[0], catRequisicion=datos2[0],
-                           catPuesto=datos3[0], catEdoCivil=datos4[0], catEscolaridad=datos5, catGradoAvance=datos6, catCarrera=datos7)
+    return render_template("empleados.html", pue = datos, dat=dato[0], catRequisicion=datos2, catPuesto=datos3, catEdoCivil=datos4, catEscolaridad=datos5, catGradoAvance=datos6, catCarrera=datos7)
 
 
 @app.route('/empleados_borrar/<string:idP>')
@@ -478,10 +471,6 @@ def empleados_borrar(idP):
     cursor.execute('DELETE FROM empleado WHERE idEmpleado = %s', (idP,))
     conn.commit()
     conn.close()  
-
-    # Cerramos la conexión después de utilizarla
-    # También puedes cerrar el cursor, pero como la conexión se cerrará, no es necesario.
-
     return redirect(url_for('empleados'))
 
 
@@ -491,7 +480,7 @@ def empleados_agr02():
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
     cursor = conn.cursor()
 
-    cursor.execute('select idEmpleado, descripcion from empleado ')
+    cursor.execute('select idEmpleado, idEmpleado from empleado ')
     datos1 = cursor.fetchall()
 
     cursor.execute('select idEstadoCivil, descripcion from estado_civil ')
@@ -519,10 +508,6 @@ def empleados_agr02():
 def empleados_fagrega2():
     if request.method == 'POST':
 
-        if  'idEmpleado' in request.form:
-            idAr = request.form['idEmpleado']
-        else:
-            idAr = '1'
         if 'idRequisicion' in request.form:
             idEs = request.form['idRequisicion']
         else:
@@ -564,15 +549,36 @@ def empleados_fagrega2():
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
     cursor = conn.cursor()
     cursor.execute(
-    'insert into empleado (idEmpleado, idRequisicion, idPuesto, CURP, RFC, nombre, domCalle, domNumExtInt, domColonia,'
-    ' tel1, sueldo, correoE, edad, sexo, idEstadoCivil, idEscolaridad, idGradoAvance, idCarrera) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)',
-    ( idAr, idEs, idGA, idCa, idCe, idCi, idCo, CURP, RFC, nombre, apellido, domCalle, domCalle, domColonia, tel1, sueldo, correoE, edad, sexo))
+    'insert into empleado (nombre,apellido,idRequisicion,idPuesto, idEstadoCivil, idEscolaridad,idGradoAvance,idCarrera,CURP,RFC,domCalle,domNumExtInt, domColonia,tel1,sueldo, correoE, edad, sexo) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)',
+    ( nombre, apellido,idEs, idGA, idCa, idCe, idCi, idCo, CURP, RFC, domCalle, domCalle, domColonia, tel1, sueldo, correoE, edad, sexo))
     conn.commit()
 
     cursor.execute('select idEmpleado from empleado where idEmpleado=(select max(idEmpleado) from empleado) ')
     dato = cursor.fetchall()
     idpue = dato[0]
     idP = idpue[0]
+
+    cursor.execute('select count(*) from idioma ')
+    dato = cursor.fetchall()
+    nidio = dato[0]
+    ni = nidio[0] + 1
+
+    for i in range(1, ni):
+        idio = 'i' + str(i)
+        if idio in request.form:
+            cursor.execute('insert into empleado(idEmpleado,idIdioma) values (%s,%s)', (idP, i))
+            conn.commit()
+
+    cursor.execute('select count(*) from habilidad ')
+    dato = cursor.fetchall()
+    nhab = dato[0]
+    nh =nhab[0]+1
+
+    for i in range(1,nh):
+        habi = 'h' + str(i)
+        if habi in request.form:
+            cursor.execute('insert into empleado(idEmpleado,idHabilidad) values (%s,%s)', (idP,i))
+            conn.commit()
 
     return redirect(url_for('empleados_agr02'))
 

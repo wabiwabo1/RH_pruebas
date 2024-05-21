@@ -533,6 +533,8 @@ CREATE TABLE `empleado` (
   `idEscolaridad` int(11) NOT NULL,
   `idGradoAvance` int(11) NOT NULL,
   `idCarrera` int(11) NOT NULL,
+  'idIdioma' int(11) NOT NULL,
+  'IdHabilidad' int (11) NOT NULL,
   PRIMARY KEY (`idEmpleado`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 

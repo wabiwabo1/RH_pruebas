@@ -5,12 +5,18 @@
 body{
     background-attachment: unset;
     background-position: center center;
-    background-image: url(/static/imagenes/recursos.png);
-  background-attachment: fixed;
+    background-image: url(/static/imagenes/BjEU.gif);
+    text-align: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
 }
+ 
+
+  
 
 #pipipi{
-    color: white;
+    color: rgb(245, 239, 239);
    
     width: 90%;
     margin: 50px auto;
@@ -53,3 +59,4 @@ html, body {
 footer,p{
     color:rgb(242, 243, 245);
 }
+

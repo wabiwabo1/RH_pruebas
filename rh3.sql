@@ -519,6 +519,7 @@ CREATE TABLE `empleado` (
   `CURP` varchar(30) NOT NULL,
   `RFC` varchar(20) NOT NULL,
   `nombre` varchar(40) NOT NULL,
+  `descripcion` varchar(255) DEFAULT NULL,
   `apellido` varchar(40) NOT NULL,
   `domCalle` varchar(40) NOT NULL,
   `domNumExtInt` varchar(30) NOT NULL,
@@ -535,6 +536,7 @@ CREATE TABLE `empleado` (
   PRIMARY KEY (`idEmpleado`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
+
 --
 -- Volcado de datos para la tabla `candidato`
 --
@@ -542,4 +544,3 @@ CREATE TABLE `empleado` (
 INSERT INTO `empleado` (`idEmpleado`, `idRequisicion`, `idPuesto`, `CURP`, `RFC`, `nombre`, `apellido`, `domCalle`, `domNumExtInt`, `domColonia`, `tel1`, `sueldo`, `correoE`, `edad`, `sexo`, `idEstadoCivil`, `idEscolaridad`, `idGradoAvance`, `idCarrera`) VALUES
 (1, 1, 1, 'ROGH760106MASDML03', 'dfadf', 'Carlitos', 'Muntez', 'Villas', '#23', 'palmas', '4491102343', '$233', 'carlitos@gmail.com', 23, 'Macho', 1, 2, 1, 1),
 (2, 1, 1, 'ROML551119HASDCR08', 'dfajy', 'Pepe', 'Maciado', 'Potreros', '#26', 'cruz', '4491739435', '$2223', 'pepe@gmail.com', 23, 'Indistinto', 3, 2, 3, 1);
-

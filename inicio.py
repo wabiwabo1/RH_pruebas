@@ -486,8 +486,8 @@ def empleados_borrar(idP):
 
 
 
-@app.route('/empleados_agr0p2')
-def empleados_agr0p2():
+@app.route('/empleados_agr02')
+def empleados_agr02():
     conn = pymysql.connect(host='localhost', user='root', passwd='', db='rh3')
     cursor = conn.cursor()
 
@@ -512,11 +512,11 @@ def empleados_agr0p2():
     cursor.execute('select idHabilidad, descripcion from habilidad ')
     datos7 = cursor.fetchall()
 
-    return render_template("empleados_agr0p2.html", catEmpleado=datos1, catEdoCivil=datos2, catEscolaridad=datos3,
+    return render_template("empleados_agr02.html", catEmpleado=datos1, catEdoCivil=datos2, catEscolaridad=datos3,
                            catGradoAvance=datos4, catCarrera=datos5, catIdioma=datos6, catHabilidad=datos7)
 
 @app.route('/empleados_fagrega2', methods=['POST'])
-def empleados_fagrega():
+def empleados_fagrega2():
     if request.method == 'POST':
 
         if  'idEmpleado' in request.form:
@@ -574,7 +574,8 @@ def empleados_fagrega():
     idpue = dato[0]
     idP = idpue[0]
 
-    return redirect(url_for('empleados'))
+    return redirect(url_for('empleados_agr02'))
+
 
 @app.route('/empleados_fedita/<string:idP>', methods=['POST'])
 def empleados_fedita(idP):
